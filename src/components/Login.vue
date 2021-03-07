@@ -61,8 +61,20 @@ export default {
   methods: {
     // 登录前表单数据验证
     login() {
-      this.$refs.loginFormRef.validate((valid) => {
-        console.log(valid);
+      this.$refs.loginFormRef.validate(async (valid) => {
+        if (!valid) {
+          return;
+        } else {
+          const { data: result } = await this.$http.post(
+            "login",
+            this.loginForm
+          );
+          if (result.meta.status !== 200) {
+            return console.log("登录失败");
+          } else {
+            console.log("登录成功");
+          }
+        }
       });
     },
     // 重置登录表单
